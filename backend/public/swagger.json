@@ -1,0 +1,315 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/users": {
+      "post": {
+        "operationId": "AuthController_registerUser",
+        "summary": "Register a new user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/token": {
+      "post": {
+        "operationId": "AuthController_generateToken",
+        "summary": "Generate a new token",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Token generated successfully"
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "operationId": "AuthController_refreshToken",
+        "summary": "Refresh an existing token",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Token refreshed successfully"
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/set-new-password": {
+      "post": {
+        "operationId": "AuthController_setNewPassword",
+        "summary": "Set a new password after first login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Password set successfully"
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/datasources": {
+      "get": {
+        "operationId": "getDatasources",
+        "summary": "Get all saved datasource connections",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of saved datasource connections",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasourceDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Datasources"
+        ]
+      },
+      "post": {
+        "operationId": "createDatasource",
+        "summary": "Create a new datasource connection",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created datasource connection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasourceDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Datasources"
+        ]
+      }
+    },
+    "/datasources/{datasourceId}": {
+      "get": {
+        "operationId": "getDatasource",
+        "summary": "Get a specific saved datasource connection",
+        "parameters": [
+          {
+            "name": "datasourceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The saved datasource connection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasourceDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Datasources"
+        ]
+      },
+      "put": {
+        "operationId": "updateDatasource",
+        "summary": "Update a datasource connection",
+        "parameters": [
+          {
+            "name": "datasourceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated datasource connection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasourceDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Datasources"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteDatasource",
+        "summary": "Delete a datasource connection",
+        "parameters": [
+          {
+            "name": "datasourceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The deleted datasource connection"
+          }
+        },
+        "tags": [
+          "Datasources"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Hakamo API",
+    "description": "",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "temporaryPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "temporaryPassword"
+        ]
+      },
+      "RequestTokenDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "DatasourceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the datasource"
+          },
+          "connectionString": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "POSTGRES",
+              "MYSQL",
+              "MONGODB",
+              "MSSQL"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "connectionString",
+          "type"
+        ]
+      }
+    }
+  }
+}
